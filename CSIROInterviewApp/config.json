@@ -1,0 +1,4 @@
+{
+  "EnableDeveloperExceptions": "True",
+  "ConnectionStrings": { "DBConnection": "Server=localhost;Database=ResearchApplications;Integrated Security=True;TrustServerCertificate=True" }
+}
