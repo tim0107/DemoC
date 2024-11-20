@@ -1,0 +1,91 @@
+﻿@model UserViewModel
+@{
+    string message = null;
+    if (TempData["SenMailStatus"] is not null)
+    {
+        message = TempData["SenMailStatus"] as string;
+    }
+}
+
+<div class="container">
+
+    <h2 class="text-center m-3">User List</h2>
+
+    @* <form asp-action="filter" method="get"> *@
+        <div class="row">
+            <div class="col-7"></div>
+            <div class="col-5 text-right input-group">
+                <input asp-for="Name" class="form-control m-2" type="text" name="name" placeholder="Enter name" />
+                <button class="btn btn-primary m-2" onclick="search()">Search</button>
+                <button class="btn btn-primary m-2" onclick="filter()">Filter</button>
+            </div>
+        </div>
+    @* </form> *@
+    @if (message is not null)
+    {
+        <div class="m-2">
+            <label class="alert alert-success">@message</label>
+        </div>
+    }
+
+    <table class="table table-bordered border-primary">
+        <thead>
+            <tr>
+                <th>User Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone number</th>
+                <th>Course</th>
+                <th>GPA</th>
+                <th>University</th>
+                <th>Cover letter file</th>
+                <th>Resume file</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.UserId</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@user.Course</td>
+                    <td>@user.GPA</td>
+                    <td>@user.University</td>
+                    <td><a href="@user.CoverLetterDownloadUrl" download="@user.CoverLetterFilePath">@user.CoverLetterFilePath</a></td>
+                    <td><a href="@user.ResumeDownloadUrl" download="@user.ResumeFilePath">@user.ResumeFilePath</a></td>
+                    <td>
+                        <a class="btn btn-secondary" asp-controller="Email" asp-action="Index" asp-route-id="@user.UserId">Send invitation</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function search() {
+        debugger;
+        
+        const name = document.querySelector('input[name="name"]');
+        if (name.value) {
+            window.location.href = `/admin/search?name=${name.value}`;
+        }
+        else {
+            window.location.href = `/admin/search`;
+        }
+    }
+    function filter() {
+        debugger;
+        
+        const name = document.querySelector('input[name="name"]');
+        if (name.value) {
+            window.location.href = `/admin/filter?name=${name.value}`;
+        }
+        else {
+            window.location.href = `/admin/filter`;
+        }
+    }
+</script>
